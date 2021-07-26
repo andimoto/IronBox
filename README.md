@@ -1,6 +1,6 @@
 # This is a box for TS100 soldering iron with some accessories and space for a USB C PD Powerbank
 
-__Note:__ This box/case is derived from my keebcu projects keebCase.scad.
+__Note:__ This box/case is derived from my keebcu projects keebCase.scad!
 
 # LICENSE
 
