@@ -7,7 +7,7 @@ single parts go to end of this file
 
 $fn=70;
 
-boxHeight = 40;
+boxHeight = 30;
 boxY = 120;
 boxX = 140;
 wallThickness = 3;
@@ -86,8 +86,8 @@ module es120()
   cylinder(r=es120_dia1/2,h=es120_len1);
   translate([0,0,es120_len1]) cylinder(r=es120_dia2/2,h=es120_len2);
 }
-temp1=es120_len1+es120_len2;
-translate([sideThickness+(boxX-temp1)/2,es120_dia1/2+wallThickness,boxHeight/2+wallThickness]) rotate([0,90,0]) es120();
+/* temp1=es120_len1+es120_len2;
+translate([sideThickness+(boxX-temp1)/2,es120_dia1/2+wallThickness,boxHeight/2+wallThickness]) rotate([0,90,0]) es120(); */
 
 screwDriver_dia1=20;
 screwDriver_dia2=18;
@@ -101,29 +101,25 @@ module hexScrewDriver()
   translate([0,0,screwDriver_len2]) cylinder(r1=screwDriver_dia1/2,r2=screwDriver_dia2/2,h=screwDriver_len1);
   translate([0,0,screwDriver_len1+screwDriver_len2]) cylinder(r=screwDriver_dia2/2,h=screwDriver_len3);
 }
-temp2=screwDriver_len1+screwDriver_len2+screwDriver_len3;
-translate([sideThickness+(boxX-temp2)/2,es120_dia1+screwDriver_dia1/2+wallThickness*2,boxHeight/2+wallThickness]) rotate([0,90,0]) hexScrewDriver();
 
 hexBitHolderX=52;
 hexBitHolderY1=9;
 hexBitHolderY2=14;
 hexBitHolderZ=8;
-
+hexBitHolderCnt=7;
+hexBitHolderDist=20;
+temp3bit=(hexBitHolderCnt-1)*hexBitHolderDist + hexBitHolderY2;
+temp3=sideThickness+boxX-(boxX-temp3bit)/2;
 module hexBitHolderCutout()
 {
   cube([hexBitHolderX,hexBitHolderY1,hexBitHolderZ]);
-  translate([0,0,hexBitHolderZ]) cube([hexBitHolderX,hexBitHolderY2,hexBitHolderZ]);
+  translate([0,0,hexBitHolderZ]) cube([hexBitHolderX,hexBitHolderY2,hexBitHolderZ+6]);
+  translate([6,4,0]) cylinder(r=4,h=hexBitHolderZ+23);
 }
+
 boxTopSurface=wallThickness+boxHeight/2;
-translate([hexBitHolderY2+sideThickness,boxY+wallThickness-hexBitHolderX,boxTopSurface-hexBitHolderZ]) rotate([0,0,90]) hexBitHolderCutout();
-
-module customCutout()
-{
 
 
-}
-
-/* customCutout(); */
 
 
 /* DEBUG */
@@ -159,8 +155,6 @@ module halfCase(locks=true, magnets=true, caseCutout=true)
             boxHeight/2]);
         cylinder(r=edgeRadius, h=0.0000001, center=false);
       }
-    }else{
-      customCutout();
     }
 
     if(magnets == true)
@@ -202,12 +196,72 @@ module halfCase(locks=true, magnets=true, caseCutout=true)
   }
 }
 
+
+module screwDriverBox()
+{
+  difference()
+  {
+    color("grey") translate([0,0,0]) halfCase(locks=false,magnets=true, caseCutout=false);
+
+    temp1=es120_len1+es120_len2;
+    translate([sideThickness+(boxX-temp1)/2,es120_dia1/2+wallThickness,boxHeight/2+wallThickness]) rotate([0,90,0]) es120();
+
+    temp2=screwDriver_len1+screwDriver_len2+screwDriver_len3;
+    translate([sideThickness+(boxX-temp2)/2,es120_dia1+screwDriver_dia1/2+wallThickness*2,boxHeight/2+wallThickness])
+    rotate([0,90,0]) hexScrewDriver();
+
+    temp4=sideThickness+(boxX-temp3bit)/2;
+    translate([temp4,boxY+wallThickness-hexBitHolderX,boxTopSurface-hexBitHolderZ])
+    cube([temp3bit+4,hexBitHolderX,12]);
+
+    extraX=8;
+    extraZ=-3;
+    translate([extraX+temp3,boxY+wallThickness-hexBitHolderX,boxTopSurface-hexBitHolderZ+extraZ])
+    rotate([0,0,90])
+    for (a =[1:hexBitHolderCnt])
+    {
+      translate([0,hexBitHolderDist*(a-1),0]) rotate([-30,0,0]) hexBitHolderCutout();
+    }
+
+    translate([sideThickness,48,wallThickness]) cube([boxX,20,(boxHeight/2)]);
+
+  }
+
+  mirror([1,0,0])
+  difference()
+  {
+    color("grey")  translate([0,0,0]) halfCase(locks=false,magnets=true, caseCutout=false);
+
+    temp1=es120_len1+es120_len2;
+    translate([sideThickness+(boxX-temp1)/2,es120_dia1/2+wallThickness,boxHeight/2+wallThickness]) rotate([0,90,0]) es120();
+
+    temp2=screwDriver_len1+screwDriver_len2+screwDriver_len3;
+    translate([sideThickness+(boxX-temp2)/2,es120_dia1+screwDriver_dia1/2+wallThickness*2,boxHeight/2+wallThickness]) rotate([0,90,0]) hexScrewDriver();
+
+    extraX=1;
+    extraZ=0;
+    hexHolderCutoutTopZ=16;
+    temp3bit=(hexBitHolderCnt-1)*hexBitHolderDist + hexBitHolderY2;
+    temp4=sideThickness+(boxX-temp3bit)/2;
+    translate([-extraX+temp4,boxY+wallThickness-hexBitHolderX,boxTopSurface-hexHolderCutoutTopZ+extraZ])
+    cube([temp3bit+extraX*2,hexBitHolderX,16]);
+
+    translate([sideThickness,48,wallThickness]) cube([boxX,20,boxHeight/2]);
+  }
+}
+
+intersection()
+{
+
+screwDriverBox();
+/* translate([10+110,80,0]) cube([40,50,40]); */
+}
 /* ################ BUILD_LINE ################# */
 /* ############################################# */
 /* ########## Place keyboard case ############## */
 /* ############################################# */
 
-color("grey") translate([0,0,0]) halfCase(locks=true,magnets=true, caseCutout=false);
+/* #color("grey") translate([0,0,0]) halfCase(locks=false,magnets=true, caseCutout=false); */
 /* color("grey") translate([0,0,boxHeight+wallThickness*2+0.0]) mirror([0,0,1]) halfCase(locks=true,magnets=true); */
 
 
