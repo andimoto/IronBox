@@ -299,7 +299,7 @@ module screwDriverBox(top=true,bottom=true, hexBitHolder=true, hexInlets=false)
   }
 }
 
-translate([5,0,0]) screwDriverBox(top=false,bottom=true,hexBitHolder=false,hexInlets=true);
+/* translate([5,0,0]) screwDriverBox(top=false,bottom=true,hexBitHolder=false,hexInlets=true); */
 translate([-5,0,0]) screwDriverBox(top=true,bottom=false,hexBitHolder=false,hexInlets=true);
 
 intersection()
