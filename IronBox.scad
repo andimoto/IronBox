@@ -7,9 +7,9 @@ single parts go to end of this file
 
 $fn=70;
 
-keebLen = 290;
-keebThickness = 65;
-keebHeight = 100;
+boxHeight = 40;
+boxY = 100;
+boxX = 140;
 wallThickness = 3;
 sideThickness = 10;
 edgeRadius = 2;
@@ -75,15 +75,53 @@ module lock(radius=lockRadius, height=lockThickness, negativ=false)
   }
 }
 
+
+es120_dia1=18;
+es120_len1=69;
+es120_dia2=16;
+es120_len2=64;
+
+module es120()
+{
+  cylinder(r=es120_dia1/2,h=es120_len1);
+  translate([0,0,es120_len1]) cylinder(r=es120_dia2/2,h=es120_len2);
+}
+temp1=es120_len1+es120_len2;
+translate([sideThickness+(boxX-temp1)/2,0,boxHeight/2+wallThickness]) rotate([0,90,0]) es120();
+
+screwDriver_dia1=20;
+screwDriver_dia2=18;
+screwDriver_len1=65;
+screwDriver_len2=35;
+screwDriver_len3=22;
+
+module hexScrewDriver()
+{
+  cylinder(r=screwDriver_dia1/2,h=screwDriver_len2);
+  translate([0,0,screwDriver_len2]) cylinder(r1=screwDriver_dia1/2,r2=screwDriver_dia2/2,h=screwDriver_len1);
+  translate([0,0,screwDriver_len1+screwDriver_len2]) cylinder(r=screwDriver_dia2/2,h=screwDriver_len3);
+}
+temp2=screwDriver_len1+screwDriver_len2+screwDriver_len3;
+translate([sideThickness+(boxX-temp2)/2,0,boxHeight/2+wallThickness]) rotate([0,90,0]) hexScrewDriver();
+
+module customCutout()
+{
+
+
+}
+
+/* customCutout(); */
+
+
 /* DEBUG */
   /* translate([edgeRadius,edgeRadius,0])
 translate([-edgeRadius+lockThickness,
-  keebThickness/2+wallThickness,
-  (keebLen/2+wallThickness)-lockRadius+0.5])
+  boxY/2+wallThickness,
+  (boxHeight/2+wallThickness)-lockRadius+0.5])
 rotate([90,0,0]) rotate([0,-90,0]) lock(negativ=true); */
 
 
-module halfCase(locks=true, magnets=true)
+module halfCase(locks=true, magnets=true, caseCutout=true)
 {
   /* move piece by edgeRadius to align it at zero */
   translate([edgeRadius,edgeRadius,0])
@@ -91,20 +129,25 @@ module halfCase(locks=true, magnets=true)
     /* complete case */
     minkowski()
     {
-      cube([(keebHeight+sideThickness*2)-edgeRadius*2,
-          (keebThickness+wallThickness*2)-edgeRadius*2,
-          (keebLen/2)+wallThickness]);
+      cube([(boxX+sideThickness*2)-edgeRadius*2,
+          (boxY+wallThickness*2)-edgeRadius*2,
+          (boxHeight/2)+wallThickness]);
       cylinder(r=edgeRadius, h=0.0000001, center=false);
     }
 
-    /* case cutout */
-    translate([sideThickness,wallThickness,wallThickness])
-    minkowski()
+    if(caseCutout == true)
     {
-      cube([keebHeight-edgeRadius*2,
-          keebThickness-edgeRadius*2,
-          keebLen/2]);
-      cylinder(r=edgeRadius, h=0.0000001, center=false);
+      /* case cutout */
+      translate([sideThickness,wallThickness,wallThickness])
+      minkowski()
+      {
+        cube([boxX-edgeRadius*2,
+            boxY-edgeRadius*2,
+            boxHeight/2]);
+        cylinder(r=edgeRadius, h=0.0000001, center=false);
+      }
+    }else{
+      customCutout();
     }
 
     if(magnets == true)
@@ -112,20 +155,20 @@ module halfCase(locks=true, magnets=true)
       /* magnets */
       translate([-edgeRadius+sideThickness/2,
         -edgeRadius+wallThickness+magnetRadius+yMoveMagnet,
-        keebLen/2+wallThickness-magnetThickness])
+        boxHeight/2+wallThickness-magnetThickness])
       cylinder(r=magnetRadius, h=magnetThickness, center=false);
       translate([-edgeRadius+sideThickness/2,
-        -edgeRadius+keebThickness-yMoveMagnet,
-        keebLen/2+wallThickness-magnetThickness])
+        -edgeRadius+boxY-yMoveMagnet,
+        boxHeight/2+wallThickness-magnetThickness])
       cylinder(r=magnetRadius, h=magnetThickness, center=false);
 
-      translate([-edgeRadius+keebHeight+sideThickness+sideThickness/2,
+      translate([-edgeRadius+boxX+sideThickness+sideThickness/2,
         -edgeRadius+wallThickness+magnetRadius+yMoveMagnet,
-        keebLen/2+wallThickness-magnetThickness])
+        boxHeight/2+wallThickness-magnetThickness])
       cylinder(r=magnetRadius, h=magnetThickness, center=false);
-      translate([-edgeRadius+keebHeight+sideThickness+sideThickness/2,
-        -edgeRadius+keebThickness-yMoveMagnet,
-        keebLen/2+wallThickness-magnetThickness])
+      translate([-edgeRadius+boxX+sideThickness+sideThickness/2,
+        -edgeRadius+boxY-yMoveMagnet,
+        boxHeight/2+wallThickness-magnetThickness])
       cylinder(r=magnetRadius, h=magnetThickness, center=false);
     }
 
@@ -133,14 +176,14 @@ module halfCase(locks=true, magnets=true)
     {
       color("yellow")
       translate([-edgeRadius+lockThickness,
-        (keebThickness/2)-edgeRadius+wallThickness,
-        (keebLen/2+wallThickness)-lockRadius])
+        (boxY/2)-edgeRadius+wallThickness,
+        (boxHeight/2+wallThickness)-lockRadius])
       rotate([90,0,0]) rotate([0,-90,0]) scale([1.02,1.02,1]) lock(negativ=true);
 
       color("yellow")
-      translate([(keebHeight-edgeRadius*2+sideThickness*2+edgeRadius)-lockThickness,
-        (keebThickness/2)-edgeRadius+wallThickness,
-        (keebLen/2+wallThickness)-lockRadius])
+      translate([(boxX-edgeRadius*2+sideThickness*2+edgeRadius)-lockThickness,
+        (boxY/2)-edgeRadius+wallThickness,
+        (boxHeight/2+wallThickness)-lockRadius])
       rotate([90,0,0]) rotate([0,90,0]) scale([1.02,1.02,1]) lock(negativ=true);
     }
   }
@@ -151,20 +194,20 @@ module halfCase(locks=true, magnets=true)
 /* ########## Place keyboard case ############## */
 /* ############################################# */
 
-color("grey") translate([0,0,0]) halfCase(locks=true,magnets=true);
-/* color("grey") translate([0,0,keebLen+wallThickness*2+0.0]) mirror([0,0,1]) halfCase(locks=true,magnets=true); */
+color("grey") translate([0,0,0]) halfCase(locks=true,magnets=true, caseCutout=false);
+/* color("grey") translate([0,0,boxHeight+wallThickness*2+0.0]) mirror([0,0,1]) halfCase(locks=true,magnets=true); */
 
 
 /* case locks */
-color("LightSkyBlue") translate([lockThickness,
-  (keebThickness/2)+wallThickness,
-  (keebLen/2)+wallThickness-lockRadius])
-rotate([90,0,0]) rotate([0,-90,0]) lock(negativ=false);
+/* color("LightSkyBlue") translate([lockThickness,
+  (boxY/2)+wallThickness,
+  (boxHeight/2)+wallThickness-lockRadius])
+rotate([90,0,0]) rotate([0,-90,0]) lock(negativ=false); */
 
-color("LightSkyBlue") translate([(keebHeight+sideThickness*2)-lockThickness,
-  (keebThickness/2)+wallThickness,
-  (keebLen/2)+wallThickness-lockRadius])
-rotate([90,0,0]) rotate([0,90,0]) lock(negativ=false);
+/* color("LightSkyBlue") translate([(boxX+sideThickness*2)-lockThickness,
+  (boxY/2)+wallThickness,
+  (boxHeight/2)+wallThickness-lockRadius])
+rotate([90,0,0]) rotate([0,90,0]) lock(negativ=false); */
 
 
 
@@ -174,5 +217,5 @@ rotate([90,0,0]) rotate([0,90,0]) lock(negativ=false);
 /* difference()
 {
   translate([0,0,0]) halfCase(locks=true,magnets=true);
-  translate([0,-40,0]) cube([keebHeight+sideThickness*2+4,keebThickness+wallThickness*2+4,(keebLen/2)+wallThickness]);
+  translate([0,-40,0]) cube([boxX+sideThickness*2+4,boxY+wallThickness*2+4,(boxHeight/2)+wallThickness]);
 } */
