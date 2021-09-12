@@ -2,6 +2,10 @@
 
 __Note:__ This box/case is derived from my keebcu projects keebCase.scad.
 
+## Box for ES120 screw driver and 4mm hex bits
+
+![](ES120-Box.png)
+
 # LICENSE
 
 <dl>

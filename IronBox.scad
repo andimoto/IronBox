@@ -197,64 +197,85 @@ module halfCase(locks=true, magnets=true, caseCutout=true)
 }
 
 
-module screwDriverBox()
+module screwDriverBox(top=true,bottom=true, hexInlets=false)
 {
-  difference()
+  if(bottom == true)
   {
-    color("grey") translate([0,0,0]) halfCase(locks=false,magnets=true, caseCutout=false);
-
-    temp1=es120_len1+es120_len2;
-    translate([sideThickness+(boxX-temp1)/2,es120_dia1/2+wallThickness,boxHeight/2+wallThickness]) rotate([0,90,0]) es120();
-
-    temp2=screwDriver_len1+screwDriver_len2+screwDriver_len3;
-    translate([sideThickness+(boxX-temp2)/2,es120_dia1+screwDriver_dia1/2+wallThickness*2,boxHeight/2+wallThickness])
-    rotate([0,90,0]) hexScrewDriver();
-
-    temp4=sideThickness+(boxX-temp3bit)/2;
-    translate([temp4,boxY+wallThickness-hexBitHolderX,boxTopSurface-hexBitHolderZ])
-    cube([temp3bit+4,hexBitHolderX,12]);
-
-    extraX=8;
-    extraZ=-3;
-    translate([extraX+temp3,boxY+wallThickness-hexBitHolderX,boxTopSurface-hexBitHolderZ+extraZ])
-    rotate([0,0,90])
-    for (a =[1:hexBitHolderCnt])
+    difference()
     {
-      translate([0,hexBitHolderDist*(a-1),0]) rotate([-30,0,0]) hexBitHolderCutout();
+      color("grey") translate([0,0,0]) halfCase(locks=false,magnets=true, caseCutout=false);
+
+      temp1=es120_len1+es120_len2;
+      translate([sideThickness+(boxX-temp1)/2,es120_dia1/2+wallThickness,boxHeight/2+wallThickness]) rotate([0,90,0]) es120();
+
+      temp2=screwDriver_len1+screwDriver_len2+screwDriver_len3;
+      translate([sideThickness+(boxX-temp2)/2,es120_dia1+screwDriver_dia1/2+wallThickness*2,boxHeight/2+wallThickness])
+      rotate([0,90,0]) hexScrewDriver();
+
+      translate([sideThickness,48,wallThickness]) cube([boxX,20,(boxHeight/2)]);
+
+
+      if(hexInlets == false)
+      {
+        temp4=sideThickness+(boxX-temp3bit)/2;
+        translate([temp4,boxY+wallThickness-hexBitHolderX,boxTopSurface-hexBitHolderZ])
+        cube([temp3bit+4,hexBitHolderX,12]);
+
+        extraX=8;
+        extraZ=-3;
+        translate([extraX+temp3,boxY+wallThickness-hexBitHolderX,boxTopSurface-hexBitHolderZ+extraZ])
+        rotate([0,0,90])
+        for (a =[1:hexBitHolderCnt])
+        {
+          translate([0,hexBitHolderDist*(a-1),0]) rotate([-30,0,0]) hexBitHolderCutout();
+        }
+      }
+
+
     }
-
-    translate([sideThickness,48,wallThickness]) cube([boxX,20,(boxHeight/2)]);
-
   }
 
-  mirror([1,0,0])
-  difference()
+
+  if(top == true)
   {
-    color("grey")  translate([0,0,0]) halfCase(locks=false,magnets=true, caseCutout=false);
+    mirror([1,0,0])
+    difference()
+    {
+      color("grey")  translate([0,0,0]) halfCase(locks=false,magnets=true, caseCutout=false);
 
-    temp1=es120_len1+es120_len2;
-    translate([sideThickness+(boxX-temp1)/2,es120_dia1/2+wallThickness,boxHeight/2+wallThickness]) rotate([0,90,0]) es120();
+      temp1=es120_len1+es120_len2;
+      translate([sideThickness+(boxX-temp1)/2,es120_dia1/2+wallThickness,boxHeight/2+wallThickness]) rotate([0,90,0]) es120();
 
-    temp2=screwDriver_len1+screwDriver_len2+screwDriver_len3;
-    translate([sideThickness+(boxX-temp2)/2,es120_dia1+screwDriver_dia1/2+wallThickness*2,boxHeight/2+wallThickness]) rotate([0,90,0]) hexScrewDriver();
+      translate([sideThickness,48,wallThickness]) cube([boxX,20,boxHeight/2]);
 
-    extraX=1;
-    extraZ=0;
-    hexHolderCutoutTopZ=16;
-    temp3bit=(hexBitHolderCnt-1)*hexBitHolderDist + hexBitHolderY2;
-    temp4=sideThickness+(boxX-temp3bit)/2;
-    translate([-extraX+temp4,boxY+wallThickness-hexBitHolderX,boxTopSurface-hexHolderCutoutTopZ+extraZ])
-    cube([temp3bit+extraX*2,hexBitHolderX,16]);
+      temp2=screwDriver_len1+screwDriver_len2+screwDriver_len3;
+      translate([sideThickness+(boxX-temp2)/2,es120_dia1+screwDriver_dia1/2+wallThickness*2,boxHeight/2+wallThickness])
+      rotate([0,90,0]) hexScrewDriver();
 
-    translate([sideThickness,48,wallThickness]) cube([boxX,20,boxHeight/2]);
+      if(hexInlets == false)
+      {
+        extraX=1;
+        extraZ=0;
+        hexHolderCutoutTopZ=16;
+        temp3bit=(hexBitHolderCnt-1)*hexBitHolderDist + hexBitHolderY2;
+        temp4=sideThickness+(boxX-temp3bit)/2;
+        translate([-extraX+temp4,boxY+wallThickness-hexBitHolderX,boxTopSurface-hexHolderCutoutTopZ+extraZ])
+        cube([temp3bit+extraX*2,hexBitHolderX,16]);
+      }
+
+    }
   }
 }
+
+translate([5,0,0]) screwDriverBox(top=false,bottom=true,hexInlets=false);
+translate([-5,0,0]) screwDriverBox(top=true,bottom=false,hexInlets=false);
 
 intersection()
 {
 
-screwDriverBox();
-/* translate([10+110,80,0]) cube([40,50,40]); */
+/* screwDriverBox(top=false,bottom=true,hexInlets=false);
+screwDriverBox(top=true,bottom=false,hexInlets=false); */
+/* translate([10+110,70,0]) cube([36,70,40]); */
 }
 /* ################ BUILD_LINE ################# */
 /* ############################################# */
