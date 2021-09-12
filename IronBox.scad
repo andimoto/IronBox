@@ -8,7 +8,7 @@ single parts go to end of this file
 $fn=70;
 
 boxHeight = 40;
-boxY = 100;
+boxY = 120;
 boxX = 140;
 wallThickness = 3;
 sideThickness = 10;
@@ -87,7 +87,7 @@ module es120()
   translate([0,0,es120_len1]) cylinder(r=es120_dia2/2,h=es120_len2);
 }
 temp1=es120_len1+es120_len2;
-translate([sideThickness+(boxX-temp1)/2,0,boxHeight/2+wallThickness]) rotate([0,90,0]) es120();
+translate([sideThickness+(boxX-temp1)/2,es120_dia1/2+wallThickness,boxHeight/2+wallThickness]) rotate([0,90,0]) es120();
 
 screwDriver_dia1=20;
 screwDriver_dia2=18;
@@ -102,7 +102,20 @@ module hexScrewDriver()
   translate([0,0,screwDriver_len1+screwDriver_len2]) cylinder(r=screwDriver_dia2/2,h=screwDriver_len3);
 }
 temp2=screwDriver_len1+screwDriver_len2+screwDriver_len3;
-translate([sideThickness+(boxX-temp2)/2,0,boxHeight/2+wallThickness]) rotate([0,90,0]) hexScrewDriver();
+translate([sideThickness+(boxX-temp2)/2,es120_dia1+screwDriver_dia1/2+wallThickness*2,boxHeight/2+wallThickness]) rotate([0,90,0]) hexScrewDriver();
+
+hexBitHolderX=52;
+hexBitHolderY1=9;
+hexBitHolderY2=14;
+hexBitHolderZ=8;
+
+module hexBitHolderCutout()
+{
+  cube([hexBitHolderX,hexBitHolderY1,hexBitHolderZ]);
+  translate([0,0,hexBitHolderZ]) cube([hexBitHolderX,hexBitHolderY2,hexBitHolderZ]);
+}
+boxTopSurface=wallThickness+boxHeight/2;
+translate([hexBitHolderY2+sideThickness,boxY+wallThickness-hexBitHolderX,boxTopSurface-hexBitHolderZ]) rotate([0,0,90]) hexBitHolderCutout();
 
 module customCutout()
 {
