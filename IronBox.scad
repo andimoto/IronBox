@@ -5,7 +5,7 @@ for placing assambled parts and
 single parts go to end of this file
  */
 
-$fn=70;
+$fn=50;
 
 boxHeight = 30;
 boxY = 120;
@@ -198,11 +198,12 @@ module halfCase(locks=true, magnets=true, caseCutout=true)
 
 module 4mmHexBit(height=15)
 {
-  x=4.1;
+  x=4.4;
   y=2.35;
   translate([-x/2,-y/2,0]) cube([x,y,height]);
   rotate([0,0,60]) translate([-x/2,-y/2,0]) cube([x,y,height]);
   rotate([0,0,120]) translate([-x/2,-y/2,0]) cube([x,y,height]);
+  translate([-4,-4,height-4]) cube([8,8,4]);
 }
 /* 4mmHexBit(); */
 
@@ -242,16 +243,16 @@ module screwDriverBox(top=true,bottom=true, hexBitHolder=true, hexInlets=false)
 
       if(hexInlets == true)
       {
-        translate([boxX-sideThickness-20,70,wallThickness]) cube([40,54,(boxHeight/2)]);
+        translate([boxX-sideThickness-10,70,wallThickness]) cube([30,54,(boxHeight/2)]);
 
-        translate([sideThickness+5,73,wallThickness])
+        translate([sideThickness+5,74,wallThickness])
         union()
         {
-          for (j =[1:10])
+          for (j =[1:11])
           {
-            for (i =[1:7])
+            for (i =[1:6])
             {
-              translate([10*(j-1),8*(i-1),0]) 4mmHexBit();
+              translate([10*(j-1),9*(i-1),0]) 4mmHexBit();
             }
           }
         }
@@ -291,15 +292,15 @@ module screwDriverBox(top=true,bottom=true, hexBitHolder=true, hexInlets=false)
 
       if(hexInlets == true)
       {
-        translate([boxX-sideThickness-20,70,wallThickness]) cube([40,54,(boxHeight/2)]);
-        translate([sideThickness,70,wallThickness]) cube([boxX-42,54,boxHeight/2]);
+        translate([boxX-sideThickness-10,70,wallThickness]) cube([30,54,(boxHeight/2)]);
+        translate([sideThickness,70,wallThickness]) cube([boxX-32,54,boxHeight/2]);
       }
 
     }
   }
 }
 
-/* translate([5,0,0]) screwDriverBox(top=false,bottom=true,hexBitHolder=false,hexInlets=true); */
+translate([5,0,0]) screwDriverBox(top=false,bottom=true,hexBitHolder=false,hexInlets=true);
 translate([-5,0,0]) screwDriverBox(top=true,bottom=false,hexBitHolder=false,hexInlets=true);
 
 intersection()
