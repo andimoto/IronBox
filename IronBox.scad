@@ -76,9 +76,9 @@ module lock(radius=lockRadius, height=lockThickness, negativ=false)
 }
 
 
-es120_dia1=18;
+es120_dia1=19;
 es120_len1=69;
-es120_dia2=16;
+es120_dia2=17;
 es120_len2=64;
 
 module es120()
@@ -218,9 +218,15 @@ module screwDriverBox(top=true,bottom=true, hexBitHolder=true, hexInlets=false)
       temp1=es120_len1+es120_len2;
       translate([sideThickness+(boxX-temp1)/2,es120_dia1/2+wallThickness,boxHeight/2+wallThickness]) rotate([0,90,0]) es120();
 
+      translate([sideThickness+(boxX-temp1)/2,es120_dia1/2+wallThickness-4,wallThickness])
+        cube([es120_len1+es120_len2,8,10]);
+
       temp2=screwDriver_len1+screwDriver_len2+screwDriver_len3;
       translate([sideThickness+(boxX-temp2)/2,es120_dia1+screwDriver_dia1/2+wallThickness*2,boxHeight/2+wallThickness])
       rotate([0,90,0]) hexScrewDriver();
+
+      translate([sideThickness+(boxX-temp2)/2,es120_dia1+screwDriver_dia1/2+wallThickness*2-4,wallThickness])
+        cube([screwDriver_len1+screwDriver_len2+screwDriver_len3,8,10]);
 
       translate([sideThickness,48,wallThickness]) cube([boxX,20,(boxHeight/2)]);
 
@@ -257,8 +263,6 @@ module screwDriverBox(top=true,bottom=true, hexBitHolder=true, hexInlets=false)
           }
         }
       }
-
-
     }
   }
 
@@ -272,12 +276,18 @@ module screwDriverBox(top=true,bottom=true, hexBitHolder=true, hexInlets=false)
 
       temp1=es120_len1+es120_len2;
       translate([sideThickness+(boxX-temp1)/2,es120_dia1/2+wallThickness,boxHeight/2+wallThickness]) rotate([0,90,0]) es120();
+      translate([sideThickness+(boxX-temp1)/2,es120_dia1/2+wallThickness-4,wallThickness])
+        cube([es120_len1+es120_len2,8,10]);
+
 
       translate([sideThickness,48,wallThickness]) cube([boxX,20,boxHeight/2]);
 
       temp2=screwDriver_len1+screwDriver_len2+screwDriver_len3;
       translate([sideThickness+(boxX-temp2)/2,es120_dia1+screwDriver_dia1/2+wallThickness*2,boxHeight/2+wallThickness])
       rotate([0,90,0]) hexScrewDriver();
+
+      translate([sideThickness+(boxX-temp2)/2,es120_dia1+screwDriver_dia1/2+wallThickness*2-4,wallThickness])
+        cube([screwDriver_len1+screwDriver_len2+screwDriver_len3,8,10]);
 
       if(hexBitHolder == true)
       {
@@ -305,10 +315,10 @@ translate([-5,0,0]) screwDriverBox(top=true,bottom=false,hexBitHolder=false,hexI
 
 intersection()
 {
-/* screwDriverBox(top=false,bottom=true,hexBitHolder=false,hexInlets=true); */
+/* #screwDriverBox(top=false,bottom=true,hexBitHolder=false,hexInlets=true); */
 /* screwDriverBox(top=false,bottom=true,hexInlets=false);
 screwDriverBox(top=true,bottom=false,hexInlets=false); */
-/* #translate([10,68,0]) cube([10,70,40]); */
+/* translate([70,0,0]) cube([20,70,40]); */
 }
 
 intersection()
