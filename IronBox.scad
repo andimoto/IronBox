@@ -213,7 +213,7 @@ module screwDriverBox(top=true,bottom=true, hexBitHolder=true, hexInlets=false)
   {
     difference()
     {
-      color("grey") translate([0,0,0]) halfCase(locks=false,magnets=true, caseCutout=false);
+      color("grey") translate([0,0,0]) halfCase(locks=true,magnets=true, caseCutout=false);
 
       temp1=es120_len1+es120_len2;
       translate([sideThickness+(boxX-temp1)/2,es120_dia1/2+wallThickness,boxHeight/2+wallThickness]) rotate([0,90,0]) es120();
@@ -273,7 +273,7 @@ module screwDriverBox(top=true,bottom=true, hexBitHolder=true, hexInlets=false)
     mirror([1,0,0])
     difference()
     {
-      color("grey")  translate([0,0,0]) halfCase(locks=false,magnets=true, caseCutout=false);
+      color("grey")  translate([0,0,0]) halfCase(locks=true,magnets=true, caseCutout=false);
 
       temp1=es120_len1+es120_len2;
       translate([sideThickness+(boxX-temp1)/2,es120_dia1/2+wallThickness,boxHeight/2+wallThickness]) rotate([0,90,0]) es120();
@@ -313,7 +313,30 @@ module screwDriverBox(top=true,bottom=true, hexBitHolder=true, hexInlets=false)
 }
 
 translate([5,0,0]) screwDriverBox(top=false,bottom=true,hexBitHolder=false,hexInlets=true);
-translate([-5,0,0]) screwDriverBox(top=true,bottom=false,hexBitHolder=false,hexInlets=true);
+
+/* mirror([0,0,0]) translate([0,0,boxHeight+wallThickness*2+1]) rotate([0,180,0])  */
+/* translate([-5,0,0]) screwDriverBox(top=true,bottom=false,hexBitHolder=false,hexInlets=true); */
+
+module specialLock()
+{
+  translate([lockThickness,
+    (boxY/2)+wallThickness,
+    0])
+  difference()
+  {
+    color("LightSkyBlue")
+    translate([0,
+      0,
+      (boxHeight/2)+wallThickness-lockRadius])
+    rotate([90,0,0]) rotate([0,-90,0]) lock(negativ=false);
+
+    translate([-20,-20,-10]) cube([40,40,10]);
+    translate([-20,-20,40-4]) cube([40,40,10]);
+  }
+}
+/* specialLock(); */
+
+
 
 intersection()
 {
