@@ -228,7 +228,8 @@ module screwDriverBox(top=true,bottom=true, hexBitHolder=true, hexInlets=false)
       translate([sideThickness+(boxX-temp2)/2,es120_dia1+screwDriver_dia1/2+wallThickness*2-4,wallThickness])
         cube([screwDriver_len1+screwDriver_len2+screwDriver_len3,8,10]);
 
-      translate([sideThickness,48,wallThickness]) cube([boxX,20,(boxHeight/2)]);
+      translate([sideThickness,48,wallThickness+4]) cube([boxX,20,(boxHeight/2)]);
+      translate([sideThickness+20,48,wallThickness]) cube([boxX-40,20,(boxHeight/2)]);
 
 
       if(hexBitHolder == true)
@@ -280,7 +281,8 @@ module screwDriverBox(top=true,bottom=true, hexBitHolder=true, hexInlets=false)
         cube([es120_len1+es120_len2,8,10]);
 
 
-      translate([sideThickness,48,wallThickness]) cube([boxX,20,boxHeight/2]);
+      translate([sideThickness,48,wallThickness+4]) cube([boxX,20,(boxHeight/2)]);
+      translate([sideThickness+20,48,wallThickness]) cube([boxX-40,20,(boxHeight/2)]);
 
       temp2=screwDriver_len1+screwDriver_len2+screwDriver_len3;
       translate([sideThickness+(boxX-temp2)/2,es120_dia1+screwDriver_dia1/2+wallThickness*2,boxHeight/2+wallThickness])
