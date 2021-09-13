@@ -60,8 +60,8 @@ module lock(radius=lockRadius, height=lockThickness, negativ=false)
       translate([0,radius*2, 2.4]) rotate([0,0,180]) sphereCut();
 
       /* magnet holes */
-      translate([0,-radius/1.5,0]) cylinder(r=magnetRadius+magnetRadiusTolerance, h=magnetThickness+0.7, center=false);
-      translate([0,radius*2+radius/1.5,0]) cylinder(r=magnetRadius+magnetRadiusTolerance, h=magnetThickness+0.7, center=false);
+      translate([0,-radius/1.5+4,0]) cylinder(r=magnetRadius+magnetRadiusTolerance, h=magnetThickness+0.7, center=false);
+      translate([0,radius*2+radius/1.5+4,0]) cylinder(r=magnetRadius+magnetRadiusTolerance, h=magnetThickness+0.7, center=false);
     }
 
     /* debug cut */
@@ -70,8 +70,8 @@ module lock(radius=lockRadius, height=lockThickness, negativ=false)
   if(negativ == true)
   {
     /* magnet holes */
-    translate([0,-radius/1.5,-magnetThickness-0.7]) cylinder(r=magnetRadius+magnetRadiusTolerance, h=magnetThickness+0.7, center=false);
-    translate([0,radius*2+radius/1.5,-magnetThickness-0.7]) cylinder(r=magnetRadius+magnetRadiusTolerance, h=magnetThickness+0.7, center=false);
+    #translate([0,-radius/1.5+4,-magnetThickness-0.7]) cylinder(r=magnetRadius+magnetRadiusTolerance, h=magnetThickness+0.7, center=false);
+    #translate([0,radius*2+radius/1.5,-magnetThickness-0.7]) cylinder(r=magnetRadius+magnetRadiusTolerance, h=magnetThickness+0.7, center=false);
   }
 }
 
@@ -228,8 +228,8 @@ module screwDriverBox(top=true,bottom=true, hexBitHolder=true, hexInlets=false)
       translate([sideThickness+(boxX-temp2)/2,es120_dia1+screwDriver_dia1/2+wallThickness*2-4,wallThickness])
         cube([screwDriver_len1+screwDriver_len2+screwDriver_len3,8,10]);
 
-      translate([sideThickness,48,wallThickness+4]) cube([boxX,20,(boxHeight/2)]);
-      translate([sideThickness+20,48,wallThickness]) cube([boxX-40,20,(boxHeight/2)]);
+      translate([sideThickness,48,wallThickness]) cube([boxX,20,(boxHeight/2)]);
+      /* translate([sideThickness+20,48,wallThickness]) cube([boxX-40,20,(boxHeight/2)]); */
 
 
       if(hexBitHolder == true)
@@ -281,8 +281,8 @@ module screwDriverBox(top=true,bottom=true, hexBitHolder=true, hexInlets=false)
         cube([es120_len1+es120_len2,8,10]);
 
 
-      translate([sideThickness,48,wallThickness+4]) cube([boxX,20,(boxHeight/2)]);
-      translate([sideThickness+20,48,wallThickness]) cube([boxX-40,20,(boxHeight/2)]);
+      translate([sideThickness,48,wallThickness]) cube([boxX,20,(boxHeight/2)]);
+      /* translate([sideThickness+20,48,wallThickness]) cube([boxX-40,20,(boxHeight/2)]); */
 
       temp2=screwDriver_len1+screwDriver_len2+screwDriver_len3;
       translate([sideThickness+(boxX-temp2)/2,es120_dia1+screwDriver_dia1/2+wallThickness*2,boxHeight/2+wallThickness])
@@ -315,7 +315,7 @@ module screwDriverBox(top=true,bottom=true, hexBitHolder=true, hexInlets=false)
 translate([5,0,0]) screwDriverBox(top=false,bottom=true,hexBitHolder=false,hexInlets=true);
 
 /* mirror([0,0,0]) translate([0,0,boxHeight+wallThickness*2+1]) rotate([0,180,0])  */
-/* translate([-5,0,0]) screwDriverBox(top=true,bottom=false,hexBitHolder=false,hexInlets=true); */
+translate([-5,0,0]) screwDriverBox(top=true,bottom=false,hexBitHolder=false,hexInlets=true);
 
 module specialLock()
 {
