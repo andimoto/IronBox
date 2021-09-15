@@ -70,8 +70,8 @@ module lock(radius=lockRadius, height=lockThickness, negativ=false)
   if(negativ == true)
   {
     /* magnet holes */
-    #translate([0,-radius/1.5+4,-magnetThickness-0.7]) cylinder(r=magnetRadius+magnetRadiusTolerance, h=magnetThickness+0.7, center=false);
-    #translate([0,radius*2+radius/1.5,-magnetThickness-0.7]) cylinder(r=magnetRadius+magnetRadiusTolerance, h=magnetThickness+0.7, center=false);
+    translate([0,-radius/1.5+4,-magnetThickness-0.7]) cylinder(r=magnetRadius+magnetRadiusTolerance, h=magnetThickness+0.7, center=false);
+    translate([0,radius*2+radius/1.5,-magnetThickness-0.7]) cylinder(r=magnetRadius+magnetRadiusTolerance, h=magnetThickness+0.7, center=false);
   }
 }
 
@@ -207,6 +207,15 @@ module 4mmHexBit(height=15)
 }
 /* 4mmHexBit(); */
 
+module shell(x=10,y=10,z=10,rad=0.5)
+{
+  cube([x,y,z]);
+  translate([0,rad-0.3,z-1]) rotate([0,90,0]) cylinder(r=rad,h=x);
+  translate([0,y-rad+0.3,z-1]) rotate([0,90,0]) cylinder(r=0.5,h=x);
+}
+/* shell(x=100,y=20,z=2); */
+
+
 module screwDriverBox(top=true,bottom=true, hexBitHolder=true, hexInlets=false)
 {
   if(bottom == true)
@@ -228,7 +237,10 @@ module screwDriverBox(top=true,bottom=true, hexBitHolder=true, hexInlets=false)
       translate([sideThickness+(boxX-temp2)/2,es120_dia1+screwDriver_dia1/2+wallThickness*2-4,wallThickness])
         cube([screwDriver_len1+screwDriver_len2+screwDriver_len3,8,10]);
 
-      translate([sideThickness,48,wallThickness]) cube([boxX,20,(boxHeight/2)]);
+      translate([sideThickness,48,wallThickness])
+        shell(boxX,20,(boxHeight/2));
+        /* cube([boxX,20,(boxHeight/2)]); */
+
       /* translate([sideThickness+20,48,wallThickness]) cube([boxX-40,20,(boxHeight/2)]); */
 
 
@@ -250,7 +262,8 @@ module screwDriverBox(top=true,bottom=true, hexBitHolder=true, hexInlets=false)
 
       if(hexInlets == true)
       {
-        translate([boxX-sideThickness-10,70,wallThickness]) cube([30,54,(boxHeight/2)]);
+        translate([boxX-sideThickness*2,70+53,wallThickness])
+        rotate([0,0,-90])  shell(53,30,(boxHeight/2));
 
         translate([sideThickness+5,74,wallThickness])
         union()
@@ -281,7 +294,9 @@ module screwDriverBox(top=true,bottom=true, hexBitHolder=true, hexInlets=false)
         cube([es120_len1+es120_len2,8,10]);
 
 
-      translate([sideThickness,48,wallThickness]) cube([boxX,20,(boxHeight/2)]);
+      translate([sideThickness,48,wallThickness])
+        /* cube([boxX,20,(boxHeight/2)]); */
+        shell(boxX,20,(boxHeight/2));
       /* translate([sideThickness+20,48,wallThickness]) cube([boxX-40,20,(boxHeight/2)]); */
 
       temp2=screwDriver_len1+screwDriver_len2+screwDriver_len3;
@@ -304,7 +319,9 @@ module screwDriverBox(top=true,bottom=true, hexBitHolder=true, hexInlets=false)
 
       if(hexInlets == true)
       {
-        translate([boxX-sideThickness-10,70,wallThickness]) cube([30,54,(boxHeight/2)]);
+        /* #translate([boxX-sideThickness-10,70,wallThickness]) cube([30,54,(boxHeight/2)]); */
+        translate([boxX-sideThickness*2,70+53,wallThickness])
+        rotate([0,0,-90])  shell(53,30,(boxHeight/2));
         translate([sideThickness,70,wallThickness]) cube([boxX-32,54,boxHeight/2]);
       }
 
@@ -312,7 +329,28 @@ module screwDriverBox(top=true,bottom=true, hexBitHolder=true, hexInlets=false)
   }
 }
 
-translate([5,0,0]) screwDriverBox(top=false,bottom=true,hexBitHolder=false,hexInlets=true);
+/* shell lid */
+/* #translate([sideThickness+5,48,wallThickness+boxHeight/2-2]) */
+/* union()
+{
+  shell(boxX-0.6,19.6,(2));
+  translate([10,7.5-0.2,0]) shell(5,5,7);
+  translate([boxX-5-10,7.5-0.2,0]) shell(5,5,7);
+} */
+
+
+/* shell lid */
+/* #translate([boxX-15,70+53,+wallThickness+boxHeight/2-2])
+rotate([0,0,-90]) */
+/* union()
+{
+  shell(53-0.6,30-0.4,(2));
+  translate([10,12.5-0.2,0]) shell(5,5,7);
+  translate([53-5-10,12.5-0.2,0]) shell(5,5,7);
+} */
+
+
+/* translate([5,0,0]) screwDriverBox(top=false,bottom=true,hexBitHolder=false,hexInlets=true); */
 
 /* mirror([0,0,0]) translate([0,0,boxHeight+wallThickness*2+1]) rotate([0,180,0])  */
 translate([-5,0,0]) screwDriverBox(top=true,bottom=false,hexBitHolder=false,hexInlets=true);
