@@ -89,8 +89,8 @@ module es120()
 /* temp1=es120_len1+es120_len2;
 translate([sideThickness+(boxX-temp1)/2,es120_dia1/2+wallThickness,boxHeight/2+wallThickness]) rotate([0,90,0]) es120(); */
 
-screwDriver_dia1=20;
-screwDriver_dia2=18;
+screwDriver_dia1=21;
+screwDriver_dia2=19;
 screwDriver_len1=65;
 screwDriver_len2=35;
 screwDriver_len3=22;
@@ -349,19 +349,19 @@ module screwDriverBox(top=true,bottom=true, hexBitHolder=true, hexInlets=false)
 /* shell lid */
 /* #translate([boxX-15,70+53,+wallThickness+boxHeight/2-2])
 rotate([0,0,-90]) */
-union()
+/* union()
 {
   shell(53-0.6,30-0.2,(2));
   translate([10,12.5-0.1,0]) shell(5,5,7);
   translate([53-5-10,12.5-0.1,0]) shell(5,5,7);
-}
+} */
 
 
 
-/* translate([5,0,0]) screwDriverBox(top=false,bottom=true,hexBitHolder=false,hexInlets=true); */
+translate([5,0,0]) screwDriverBox(top=false,bottom=true,hexBitHolder=false,hexInlets=true);
 
-/* mirror([0,0,0]) translate([0,0,boxHeight+wallThickness*2+1]) rotate([0,180,0])  */
-/* translate([-5,0,0]) screwDriverBox(top=true,bottom=false,hexBitHolder=false,hexInlets=true); */
+/* mirror([0,0,0]) translate([0,0,boxHeight+wallThickness*2+1]) rotate([0,180,0]) */
+translate([-5,0,0]) screwDriverBox(top=true,bottom=false,hexBitHolder=false,hexInlets=true);
 
 module specialLock()
 {
